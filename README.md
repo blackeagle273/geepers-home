@@ -1,3 +1,5 @@
+> **Archived.** Superseded by [geepers-dash](https://github.com/lukeslp/geepers-dash), the unified kiosk dashboard for the Geepers IoT platform. This repository is preserved for reference only.
+
 # Geepers Home
 
 A Raspberry Pi sensor dashboard with three runtime modes: a Flask web dashboard, a tkinter touchscreen GUI, and a classic tab-based browser. Reads 23 sensors over I2C, GPIO, 1-Wire, and ADC — with a webcam, browser-based voice input, and LLM chat.
