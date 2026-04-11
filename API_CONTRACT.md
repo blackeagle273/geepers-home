@@ -328,7 +328,7 @@ eventSource.onerror = (error) => {
 
 These endpoints are hosted on the VPS and called by the Flask app:
 
-### POST https://dr.eamer.dev/pivision/api/chat
+### POST https://dr.eamer.dev/api/vision/chat
 
 LLM chat endpoint with sensor context.
 
@@ -356,7 +356,7 @@ LLM chat endpoint with sensor context.
 }
 ```
 
-### POST https://dr.eamer.dev/pivision/api/analyze
+### POST https://dr.eamer.dev/api/vision/describe
 
 Vision analysis endpoint (scene description).
 

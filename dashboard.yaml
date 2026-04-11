@@ -242,7 +242,7 @@ sources:
   # Available providers: "xai" (grok-2-vision), "openai" (gpt-4o)
   #- id: "camera.vision"
   #  type: "vision"
-  #  endpoint: "https://dr.eamer.dev/pivision/api/analyze"
+  #  endpoint: "https://dr.eamer.dev/api/vision/describe"
   #  provider: "xai"
   #  detail: "brief"
   #  api_key: ""

@@ -37,7 +37,7 @@ class VisionSource(DataSource):
         config.setdefault("interval", 60.0)
         super().__init__(source_id, bus, config)
         self._endpoint = config.get(
-            "endpoint", "https://dr.eamer.dev/pivision/api/analyze"
+            "endpoint", "https://dr.eamer.dev/api/vision/describe"
         )
         self._api_key = config.get("api_key", "")
         self._provider = config.get("provider", "xai")

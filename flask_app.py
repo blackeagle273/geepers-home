@@ -50,8 +50,8 @@ CORS(app)  # Allow CORS for local dev
 
 # Configuration
 CONFIG_FILE = Path(__file__).parent / "dashboard.yaml"
-VPS_CHAT_ENDPOINT = "https://dr.eamer.dev/pivision/api/chat"
-VPS_VISION_ENDPOINT = "https://dr.eamer.dev/pivision/api/analyze"
+VPS_CHAT_ENDPOINT = "https://dr.eamer.dev/api/vision/chat"
+VPS_VISION_ENDPOINT = "https://dr.eamer.dev/api/vision/describe"
 
 # Global state
 class DashboardState:

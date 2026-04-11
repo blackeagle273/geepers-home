@@ -153,14 +153,14 @@ The Flask app proxies chat and vision requests to your VPS. Ensure the VPS is ru
 For local development, create an SSH tunnel to the VPS:
 
 ```bash
-ssh -L 5030:localhost:5030 dr.eamer.dev
+ssh -L 5020:localhost:5020 dr.eamer.dev
 ```
 
-Then configure `dashboard.yaml` to use `http://localhost:5030/api/...` instead of HTTPS.
+Then configure `dashboard.yaml` to use `http://localhost:5020/api/vision/...` instead of HTTPS.
 
 ### Production (Direct HTTPS)
 
-In production, the Flask app connects directly to `https://dr.eamer.dev/pivision/api/...` (no tunnel needed).
+In production, the Flask app connects directly to `https://dr.eamer.dev/api/vision/...` (no tunnel needed).
 
 ## Configuration
 
@@ -185,7 +185,7 @@ Edit `dashboard.yaml` to configure sensors and data sources.
 ```yaml
 - id: "camera.vision"
   type: "vision"
-  endpoint: "https://dr.eamer.dev/pivision/api/analyze"
+  endpoint: "https://dr.eamer.dev/api/vision/describe"
   provider: "xai"  # or "openai"
   detail: "brief"
   interval: 60
@@ -283,7 +283,7 @@ Common issues:
 ### Vision API timeout
 
 - SSH tunnel: Ensure tunnel is running (`ps aux | grep ssh`)
-- VPS status: Check VPS is running the API (`systemctl status pivision`)
+- VPS status: Check VPS is running the API (`sm health vision-api`)
 - Network latency: Increase timeout in `flask_app.py` (default: 30s)
 
 ### Kiosk not launching

@@ -1,10 +1,10 @@
 # Geepers Home
 
-A Raspberry Pi sensor dashboard with three runtime modes: a Flask web dashboard, a tkinter touchscreen GUI, and a classic tab-based browser. Reads 23 sensors over I2C, GPIO, 1-Wire, and ADC — with a webcam, browser-based voice input, and LLM chat.
+A Raspberry Pi sensor dashboard with three runtime modes: a Flask web dashboard, a tkinter touchscreen GUI, and a classic tab-based browser. Reads 23 sensors over I2C, GPIO, 1-Wire, and ADC, plus a webcam, browser-based voice input, and LLM chat.
 
 > **Work in progress.** The web dashboard (v4.1) is the active development path. The tkinter modes still work but are no longer the focus.
 
-> **LLM backend.** Designed to run with a local [Ollama](https://ollama.com) instance — point `CHAT_ENDPOINT` at your Ollama server and no cloud dependency is needed for chat. Currently wired to the [dr.eamer.dev API gateway](https://dr.eamer.dev/code/api) which supports Ollama, Anthropic, OpenAI, Mistral, and others. Without a configured endpoint the dashboard works fine for local sensor data; chat, voice, and camera scene description are just unavailable.
+> **LLM backend.** Designed to run with a local [Ollama](https://ollama.com) instance. Point `CHAT_ENDPOINT` at your Ollama server and no cloud dependency is needed for chat. Currently wired to the [dr.eamer.dev API gateway](https://dr.eamer.dev/code/api) which supports Ollama, Anthropic, OpenAI, Mistral, and others. Without a configured endpoint the dashboard works fine for local sensor data; chat, voice, and camera scene description are just unavailable.
 
 ![Python 3.10+](https://img.shields.io/badge/python-3.10+-blue)
 ![Raspberry Pi](https://img.shields.io/badge/platform-Raspberry%20Pi-red)
@@ -15,11 +15,11 @@ A Raspberry Pi sensor dashboard with three runtime modes: a Flask web dashboard,
 
 | Home | System |
 |------|--------|
-| ![Home tab — news ticker, sensor cards, camera](docs/screenshots/screenshot-home.png) | ![System tab — CPU, memory, disk, uptime, network](docs/screenshots/screenshot-system.png) |
+| ![Home tab: news ticker, sensor cards, camera](docs/screenshots/screenshot-home.png) | ![System tab: CPU, memory, disk, uptime, network](docs/screenshots/screenshot-system.png) |
 
 | Sensors | Chat |
 |---------|------|
-| ![Sensors tab — I2C sensor cards](docs/screenshots/screenshot-sensors.png) | ![Chat tab — LLM interface with sensor context](docs/screenshots/screenshot-chat.png) |
+| ![Sensors tab: I2C sensor cards](docs/screenshots/screenshot-sensors.png) | ![Chat tab: LLM interface with sensor context](docs/screenshots/screenshot-chat.png) |
 
 ## Runtime Modes
 
@@ -32,8 +32,8 @@ A Raspberry Pi sensor dashboard with three runtime modes: a Flask web dashboard,
 ## Features
 
 - Reads 23 sensors: DHT11, DS18B20, PIR, tilt, reed, hall, flame, touch, button, knock, sound, light, BME280, TSL25911, LTR390, SGP40, ICM20948, soil moisture, sound level, light level, joystick, RGB LED, buzzer
-- Demo mode — realistic simulated readings for every sensor, no hardware required
-- Chat about your environment using a language model — works with local Ollama or any OpenAI-compatible endpoint
+- Demo mode with realistic simulated readings for every sensor, no hardware required
+- Chat about your environment using a language model. Works with local Ollama or any OpenAI-compatible endpoint
 - Browser voice input (MediaRecorder → Whisper STT)
 - Scene description from USB webcam via a vision model
 - Sensor history stored in SQLite, auto-downsampled to hourly averages beyond 24h
@@ -80,12 +80,12 @@ dtoverlay=w1-gpio,gpiopin=12
 
 ## Architecture
 
-Under the hood it's a pub/sub framework — sensor threads push data, the SSE endpoint streams it to the browser:
+Under the hood it's a pub/sub framework. Sensor threads push data, the SSE endpoint streams it to the browser:
 
-- **`WebEventBus`** — thread-safe pub/sub; background sensor threads publish, SSE endpoint streams to browser
-- **`DataSource`** ABC — subclasses implement `fetch()`, base handles polling + threading + publish
-- **`DataStore`** — SQLite with WAL mode; 7-day raw retention, auto-downsamples to hourly averages
-- **`AlertManager`** — threshold rules from `dashboard.yaml`; publishes `"alert"` events to the bus
+- **`WebEventBus`** - thread-safe pub/sub; background sensor threads publish, SSE endpoint streams to browser
+- **`DataSource`** ABC - subclasses implement `fetch()`, base handles polling + threading + publish
+- **`DataStore`** - SQLite with WAL mode; 7-day raw retention, auto-downsamples to hourly averages
+- **`AlertManager`** - threshold rules from `dashboard.yaml`; publishes `"alert"` events to the bus
 
 All sources and cards self-register via `@register_source` / `@register_card` decorators. `dashboard.yaml` is the single config for sources, pages, and alert rules.
 
@@ -98,7 +98,7 @@ The chat interface proxies to a configurable endpoint that accepts a `provider` 
 | Provider | How to use |
 |----------|-----------|
 | **Ollama** (recommended, local) | Run Ollama on a Pi or LAN machine, set `CHAT_ENDPOINT=http://your-ollama-host:11434/api/chat` |
-| **dr.eamer.dev gateway** (default) | Supports Ollama, Anthropic, OpenAI, Mistral, and others — set `DREAMER_API_KEY` |
+| **dr.eamer.dev gateway** (default) | Supports Ollama, Anthropic, OpenAI, Mistral, and others. Set `DREAMER_API_KEY` |
 | **Any OpenAI-compatible API** | Set `CHAT_ENDPOINT` to any endpoint that accepts the same request shape |
 
 The `provider` and `model` sent with each chat request are passed through as-is, so switching models is just a frontend config change.
@@ -115,7 +115,7 @@ Voice STT and vision analysis currently hit the dr.eamer.dev endpoints (`VPS_URL
 ## Deployment (Pi)
 
 ```bash
-# From VPS — sync code + restart service
+# From VPS: sync code + restart service
 bash deploy.sh && bash deploy.sh --service restart
 
 # Pi service management
@@ -132,9 +132,9 @@ The Pi runs the web dashboard as `sensor-playground-web.service`. Chromium runs 
 
 | Symptom | Fix |
 |---------|-----|
-| DHT11 returns None often | Normal — ~30% failure rate, retry logic handles it |
+| DHT11 returns None often | Normal, ~30% failure rate, retry logic handles it |
 | No 1-Wire device | Add `dtoverlay=w1-gpio,gpiopin=12` to boot config and reboot |
-| ADC / OLED not found | `i2cdetect -y 1` — ADS1115 at 0x48, SSD1306 at 0x3C |
+| ADC / OLED not found | `i2cdetect -y 1` - ADS1115 at 0x48, SSD1306 at 0x3C |
 | WiFi scan fails | Add passwordless sudo for `/usr/sbin/iw` in `/etc/sudoers.d/sensor-playground` |
 | Chat/voice not working | Check `VPS_URL` and that `api.dr.eamer.dev` is reachable |
 
