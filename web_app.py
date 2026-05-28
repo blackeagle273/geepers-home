@@ -170,7 +170,7 @@ def create_app(config_path="dashboard.yaml"):
 
         gateway_payload = {
             "provider": data.get("provider", "anthropic"),
-            "model": data.get("model", "claude-sonnet-4-5-20250929"),
+            "model": data.get("model", "claude-opus-4-7"),
             "messages": messages,
             "stream": True,
             "max_tokens": 2048,
