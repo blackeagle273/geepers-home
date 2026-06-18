@@ -137,11 +137,3 @@ The Pi runs the web dashboard as `sensor-playground-web.service`. Chromium runs 
 | ADC / OLED not found | `i2cdetect -y 1` - ADS1115 at 0x48, SSD1306 at 0x3C |
 | WiFi scan fails | Add passwordless sudo for `/usr/sbin/iw` in `/etc/sudoers.d/sensor-playground` |
 | Chat/voice not working | Check `VPS_URL` and that `api.dr.eamer.dev` is reachable |
-
-## Author
-
-**Luke Steuber**
-- [lukesteuber.com](https://lukesteuber.com)
-- Bluesky: [@lukesteuber.com](https://bsky.app/profile/lukesteuber.com)
-
-MIT License
